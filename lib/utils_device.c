@@ -38,6 +38,8 @@
 #endif
 #include "internal.h"
 #include "utils_device_locking.h"
+#include <cutil/jniutil.h>
+#include "uraio_config.h"
 
 struct device {
 	char *path;

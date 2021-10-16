@@ -81,40 +81,40 @@ struct device;
 
 int TCRYPT_read_phdr(struct crypt_device *cd,
 		     struct tcrypt_phdr *hdr,
-		     struct crypt_params_tcrypt *params);
+		     struct crypt_params_tcrypt *params){ abort(); }
 
 int TCRYPT_init_by_name(struct crypt_device *cd, const char *name,
 			const char *uuid,
 			const struct dm_target *tgt,
 			struct device **device,
 			struct crypt_params_tcrypt *tcrypt_params,
-			struct tcrypt_phdr *tcrypt_hdr);
+			struct tcrypt_phdr *tcrypt_hdr){ abort(); }
 
 int TCRYPT_activate(struct crypt_device *cd,
 		     const char *name,
 		     struct tcrypt_phdr *hdr,
 		     struct crypt_params_tcrypt *params,
-		     uint32_t flags);
+		     uint32_t flags){ abort(); }
 
 int TCRYPT_deactivate(struct crypt_device *cd,
 		      const char *name,
-		      uint32_t flags);
+		      uint32_t flags){ abort(); }
 
 uint64_t TCRYPT_get_data_offset(struct crypt_device *cd,
 				struct tcrypt_phdr *hdr,
-				struct crypt_params_tcrypt *params);
+				struct crypt_params_tcrypt *params){ abort(); }
 
 uint64_t TCRYPT_get_iv_offset(struct crypt_device *cd,
 			      struct tcrypt_phdr *hdr,
-			      struct crypt_params_tcrypt *params);
+			      struct crypt_params_tcrypt *params){ abort(); }
 
 int TCRYPT_get_volume_key(struct crypt_device *cd,
 			  struct tcrypt_phdr *hdr,
 			  struct crypt_params_tcrypt *params,
-			  struct volume_key **vk);
+			  struct volume_key **vk){ abort(); }
 
 int TCRYPT_dump(struct crypt_device *cd,
 		struct tcrypt_phdr *hdr,
-		struct crypt_params_tcrypt *params);
+		struct crypt_params_tcrypt *params){ abort(); }
 
 #endif

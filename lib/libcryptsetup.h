@@ -37,6 +37,8 @@ extern "C" {
 
 #include <stddef.h>
 #include <stdint.h>
+#include <sys/types.h>
+#include <jni.h>
 
 /**
  * @defgroup crypt-init Cryptsetup device context initialization
@@ -635,14 +637,8 @@ struct crypt_params_luks2 {
  * @note For VERITY @link crypt-type @endlink, only uuid parameter is used, other parameters
  * 	are ignored and verity specific attributes are set through mandatory params option.
  */
-int crypt_format(struct crypt_device *cd,
-	const char *type,
-	const char *cipher,
-	const char *cipher_mode,
-	const char *uuid,
-	const char *volume_key,
-	size_t volume_key_size,
-	void *params);
+int crypt_format(struct crypt_device *cd, const char *type, const char *cipher, const char *cipher_mode, const char *uuid,
+				 const char *volume_key, size_t volume_key_size, void *params, jobject luksOperationCallback);
 
 /**
  * Set format compatibility flags.
@@ -1247,7 +1243,8 @@ int crypt_activate_by_passphrase(struct crypt_device *cd,
 	int keyslot,
 	const char *passphrase,
 	size_t passphrase_size,
-	uint32_t flags);
+	uint32_t flags,
+    jobject luksOperationCallback);
 
 /**
  * Activate device or check using key file.
@@ -2579,6 +2576,12 @@ void *crypt_safe_realloc(void *data, size_t size);
  * @param size size of memory in bytes
  */
 void crypt_safe_memzero(void *data, size_t size);
+
+int crypt_get_data_device_size(struct crypt_device *cd, uint64_t *deviceDataSize);
+
+ssize_t crypt_device_encrypt_write(struct crypt_device *cd, off_t offset, void *buffer, size_t buffer_length);
+
+ssize_t crypt_device_read_decrypt(struct crypt_device *cd, off_t offset, void *buffer, size_t buffer_length);
 
 /** @} */
 

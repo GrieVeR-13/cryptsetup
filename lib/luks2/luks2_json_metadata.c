@@ -25,6 +25,7 @@
 #include <assert.h>
 #include <ctype.h>
 #include <uuid/uuid.h>
+#include "uraio_config.h"
 
 #define LUKS_STRIPES 4000
 

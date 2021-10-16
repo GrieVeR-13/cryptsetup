@@ -35,12 +35,12 @@ struct device;
 int VERITY_read_sb(struct crypt_device *cd,
 		   uint64_t sb_offset,
 		   char **uuid,
-		   struct crypt_params_verity *params);
+		   struct crypt_params_verity *params) { abort(); }
 
 int VERITY_write_sb(struct crypt_device *cd,
 		   uint64_t sb_offset,
 		   const char *uuid_string,
-		   struct crypt_params_verity *params);
+		   struct crypt_params_verity *params) { abort(); }
 
 int VERITY_activate(struct crypt_device *cd,
 		     const char *name,
@@ -49,32 +49,32 @@ int VERITY_activate(struct crypt_device *cd,
 		     const char *signature_description,
 		     struct device *fec_device,
 		     struct crypt_params_verity *verity_hdr,
-		     uint32_t activation_flags);
+		     uint32_t activation_flags) { abort(); }
 
 int VERITY_verify(struct crypt_device *cd,
 		struct crypt_params_verity *verity_hdr,
 		const char *root_hash,
-		size_t root_hash_size);
+		size_t root_hash_size){ abort(); }
 
 int VERITY_create(struct crypt_device *cd,
 		  struct crypt_params_verity *verity_hdr,
 		  const char *root_hash,
-		  size_t root_hash_size);
+		  size_t root_hash_size){ abort(); }
 
 int VERITY_FEC_process(struct crypt_device *cd,
 		      struct crypt_params_verity *params,
 		      struct device *fec_device,
 		      int check_fec,
-		      unsigned int *errors);
+		      unsigned int *errors){ abort(); }
 
-uint64_t VERITY_hash_offset_block(struct crypt_params_verity *params);
+uint64_t VERITY_hash_offset_block(struct crypt_params_verity *params){ abort(); }
 
-uint64_t VERITY_hash_blocks(struct crypt_device *cd, struct crypt_params_verity *params);
+uint64_t VERITY_hash_blocks(struct crypt_device *cd, struct crypt_params_verity *params){ abort(); }
 
 uint64_t VERITY_FEC_blocks(struct crypt_device *cd,
 			   struct device *fec_device,
-			   struct crypt_params_verity *params);
+			   struct crypt_params_verity *params){ abort(); }
 
-int VERITY_UUID_generate(struct crypt_device *cd, char **uuid_string);
+int VERITY_UUID_generate(struct crypt_device *cd, char **uuid_string){ abort(); }
 
 #endif

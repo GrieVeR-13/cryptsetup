@@ -26,7 +26,7 @@
 #include <ctype.h>
 #include <errno.h>
 #include <libdevmapper.h>
-#include <uuid/uuid.h>
+#include "uuid/uuid.h"
 #include <sys/stat.h>
 #ifdef HAVE_SYS_SYSMACROS_H
 # include <sys/sysmacros.h>     /* for major, minor */
@@ -351,6 +351,8 @@ out:
 
 int dm_flags(struct crypt_device *cd, dm_target_type target, uint32_t *flags)
 {
+	//hack2
+	return -ENODEV;
 	_dm_check_versions(cd, target);
 	*flags = _dm_flags;
 

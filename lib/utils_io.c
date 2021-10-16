@@ -28,6 +28,7 @@
 #include <unistd.h>
 
 #include "utils_io.h"
+#include "uraio_config.h"
 
 static ssize_t _read_buffer(int fd, void *buf, size_t length, volatile int *quit)
 {

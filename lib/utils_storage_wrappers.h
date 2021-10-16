@@ -52,6 +52,17 @@ int crypt_storage_wrapper_init(struct crypt_device *cd,
 	struct volume_key *vk,
 	uint32_t flags);
 
+int crypt_storage_wrapper_init_mode(struct crypt_device *cd,
+							   struct crypt_storage_wrapper **cw,
+							   struct device *device,
+							   uint64_t data_offset,
+							   uint64_t iv_start,
+							   int sector_size,
+							   const char *cipher,
+								const char *_mode,
+							   struct volume_key *vk,
+							   uint32_t flags);
+
 void crypt_storage_wrapper_destroy(struct crypt_storage_wrapper *cw);
 
 /* !!! when doing 'read' or 'write' all offset values are RELATIVE to data_offset !!! */

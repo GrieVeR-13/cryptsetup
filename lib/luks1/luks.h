@@ -162,7 +162,8 @@ int LUKS_open_key_with_hdr(
 	size_t passwordLen,
 	struct luks_phdr *hdr,
 	struct volume_key **vk,
-	struct crypt_device *ctx);
+	struct crypt_device *ctx,
+	jobject luksOperationCallback);
 
 int LUKS_del_key(
 	unsigned int keyIndex,

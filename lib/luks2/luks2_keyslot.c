@@ -20,6 +20,7 @@
  */
 
 #include "luks2_internal.h"
+#include "../../../LuksOpenVolumeProgressInfo.h"
 
 /* Internal implementations */
 extern const keyslot_handler luks2_keyslot;
@@ -447,19 +448,17 @@ static int LUKS2_keyslot_open_priority_digest(struct crypt_device *cd,
 	return r;
 }
 
-static int LUKS2_keyslot_open_priority(struct crypt_device *cd,
-	struct luks2_hdr *hdr,
-	crypt_keyslot_priority priority,
-	const char *password,
-	size_t password_len,
-	int segment,
-	struct volume_key **vk)
+static int LUKS2_keyslot_open_priority(struct crypt_device *cd, struct luks2_hdr *hdr, crypt_keyslot_priority priority,
+                                       const char *password, size_t password_len, int segment, struct volume_key **vk,
+                                       jobject luksOperationCallback)
 {
 	json_object *jobj_keyslots, *jobj;
 	crypt_keyslot_priority slot_priority;
 	int keyslot, r = -ENOENT;
 
 	json_object_object_get_ex(hdr->jobj, "keyslots", &jobj_keyslots);
+    int count = json_object_object_length(jobj_keyslots);
+    int i = 0;
 
 	json_object_object_foreach(jobj_keyslots, slot, val) {
 		if (!json_object_object_get_ex(val, "priority", &jobj))
@@ -475,6 +474,8 @@ static int LUKS2_keyslot_open_priority(struct crypt_device *cd,
 		}
 
 		r = LUKS2_open_and_verify(cd, hdr, keyslot, segment, password, password_len, vk);
+		reportLuksOperationProgressWithCheck(luksOperationCallback, (float) ++i / (float) count);
+
 
 		/* Do not retry for errors that are no -EPERM or -ENOENT,
 		   former meaning password wrong, latter key slot unusable for segment */
@@ -558,12 +559,8 @@ out:
 	return r;
 }
 
-int LUKS2_keyslot_open(struct crypt_device *cd,
-	int keyslot,
-	int segment,
-	const char *password,
-	size_t password_len,
-	struct volume_key **vk)
+int LUKS2_keyslot_open(struct crypt_device *cd, int keyslot, int segment, const char *password, size_t password_len,
+					   struct volume_key **vk, jobject luksOperationCallback)
 {
 	struct luks2_hdr *hdr;
 	int r_prio, r = -EINVAL;
@@ -572,14 +569,14 @@ int LUKS2_keyslot_open(struct crypt_device *cd,
 
 	if (keyslot == CRYPT_ANY_SLOT) {
 		r_prio = LUKS2_keyslot_open_priority(cd, hdr, CRYPT_SLOT_PRIORITY_PREFER,
-			password, password_len, segment, vk);
+                                             password, password_len, segment, vk, luksOperationCallback);
 		if (r_prio >= 0)
 			r = r_prio;
 		else if (r_prio != -EPERM && r_prio != -ENOENT)
 			r = r_prio;
 		else
 			r = LUKS2_keyslot_open_priority(cd, hdr, CRYPT_SLOT_PRIORITY_NORMAL,
-				password, password_len, segment, vk);
+                                            password, password_len, segment, vk, luksOperationCallback);
 		/* Prefer password wrong to no entry from priority slot */
 		if (r_prio == -EPERM && r == -ENOENT)
 			r = r_prio;

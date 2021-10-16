@@ -22,6 +22,7 @@
 #include <assert.h>
 
 #include "luks2_internal.h"
+#include "uraio_config.h"
 
 /*
  * Helper functions

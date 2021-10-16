@@ -36,6 +36,7 @@
 
 #include "internal.h"
 #include "utils_device_locking.h"
+#include "uraio_config.h"
 
 #define same_inode(buf1, buf2) \
 	((buf1).st_ino == (buf2).st_ino && \

@@ -23,6 +23,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include "internal.h"
+#include "uraio_config.h"
 
 /*
  * Wipe using Peter Gutmann method described in

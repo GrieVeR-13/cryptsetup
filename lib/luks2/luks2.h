@@ -190,12 +190,8 @@ int LUKS2_keyslot_cipher_incompatible(struct crypt_device *cd, const char *ciphe
 /*
  * Generic LUKS2 keyslot
  */
-int LUKS2_keyslot_open(struct crypt_device *cd,
-	int keyslot,
-	int segment,
-	const char *password,
-	size_t password_len,
-	struct volume_key **vk);
+int LUKS2_keyslot_open(struct crypt_device *cd, int keyslot, int segment, const char *password, size_t password_len,
+                       struct volume_key **vk, jobject luksOperationCallback);
 
 int LUKS2_keyslot_open_all_segments(struct crypt_device *cd,
 	int keyslot_old,

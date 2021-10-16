@@ -29,11 +29,12 @@
 #include <string.h>
 #include <ctype.h>
 #include <assert.h>
-#include <uuid/uuid.h>
+#include "uuid/uuid.h"
 
 #include "luks.h"
 #include "af.h"
 #include "internal.h"
+#include "../../../LuksOpenVolumeProgressInfo.h"
 
 int LUKS_keyslot_area(const struct luks_phdr *hdr,
 	int keyslot,
@@ -1068,7 +1069,8 @@ int LUKS_open_key_with_hdr(int keyIndex,
 			   size_t passwordLen,
 			   struct luks_phdr *hdr,
 			   struct volume_key **vk,
-			   struct crypt_device *ctx)
+			   struct crypt_device *ctx,
+			   jobject luksOperationCallback)
 {
 	unsigned int i, tried = 0;
 	int r;
@@ -1080,6 +1082,7 @@ int LUKS_open_key_with_hdr(int keyIndex,
 
 	for (i = 0; i < LUKS_NUMKEYS; i++) {
 		r = LUKS_open_key(i, password, passwordLen, hdr, vk, ctx);
+		reportLuksOperationProgressWithCheck(luksOperationCallback, ((float) i + 1) / LUKS_NUMKEYS);
 		if (r == 0)
 			return i;
 

@@ -595,7 +595,7 @@ static int LUKS2_keyslot_open_by_token(struct crypt_device *cd,
 		if (keyslot_priority < priority)
 			continue;
 		log_dbg(cd, "Trying to open keyslot %u with token %d (type %s).", num, token, json_object_get_string(jobj_type));
-		r = LUKS2_keyslot_open(cd, num, segment, buffer, buffer_len, vk);
+		r = LUKS2_keyslot_open(cd, num, segment, buffer, buffer_len, vk, NULL);
 		/* short circuit on fatal error */
 		if (r < 0 && r != -EPERM && r != -ENOENT)
 			return r;

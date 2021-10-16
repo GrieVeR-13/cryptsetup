@@ -114,32 +114,32 @@ struct bitlk_metadata {
 	struct bitlk_fvek *fvek;
 };
 
-int BITLK_read_sb(struct crypt_device *cd, struct bitlk_metadata *params);
+int BITLK_read_sb(struct crypt_device *cd, struct bitlk_metadata *params){ abort(); }
 
-int BITLK_dump(struct crypt_device *cd, struct device *device, struct bitlk_metadata *params);
+int BITLK_dump(struct crypt_device *cd, struct device *device, struct bitlk_metadata *params){ abort(); }
 
 int BITLK_get_volume_key(struct crypt_device *cd,
 			 const char *password,
 			 size_t passwordLen,
 			 const struct bitlk_metadata *params,
-			 struct volume_key **open_fvek_key);
+			 struct volume_key **open_fvek_key){ abort(); }
 
 int BITLK_activate_by_passphrase(struct crypt_device *cd,
 				 const char *name,
 				 const char *password,
 				 size_t passwordLen,
 				 const struct bitlk_metadata *params,
-				 uint32_t flags);
+				 uint32_t flags){ abort(); }
 
 int BITLK_activate_by_volume_key(struct crypt_device *cd,
 				 const char *name,
 				 const char *volume_key,
 				 size_t volume_key_size,
 				 const struct bitlk_metadata *params,
-				 uint32_t flags);
+				 uint32_t flags) { abort(); }
 
-void BITLK_bitlk_fvek_free(struct bitlk_fvek *fvek);
-void BITLK_bitlk_vmk_free(struct bitlk_vmk *vmk);
-void BITLK_bitlk_metadata_free(struct bitlk_metadata *params);
+void BITLK_bitlk_fvek_free(struct bitlk_fvek *fvek){ abort(); }
+void BITLK_bitlk_vmk_free(struct bitlk_vmk *vmk){ abort(); }
+void BITLK_bitlk_metadata_free(struct bitlk_metadata *params){ abort(); }
 
 #endif

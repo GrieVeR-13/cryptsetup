@@ -237,6 +237,90 @@ err:
 	return r;
 }
 
+int crypt_storage_wrapper_init_mode(struct crypt_device *cd,
+							   struct crypt_storage_wrapper **cw,
+							   struct device *device,
+							   uint64_t data_offset,
+							   uint64_t iv_start,
+							   int sector_size,
+							   const char *cipher,
+								const char *_mode,
+							   struct volume_key *vk,
+							   uint32_t flags)
+{
+	int open_flags, r;
+	char _cipher[MAX_CIPHER_LEN], mode[MAX_CIPHER_LEN];
+	struct crypt_storage_wrapper *w;
+
+	/* device-mapper restrictions */
+	if (data_offset & ((1 << SECTOR_SHIFT) - 1))
+		return -EINVAL;
+
+	strcpy(_cipher, cipher);
+	strcpy(mode, _mode);
+//	if (crypt_parse_name_and_mode(cipher, _cipher, NULL, mode))
+//		return -EINVAL;
+
+	open_flags = O_CLOEXEC | ((flags & OPEN_READONLY) ? O_RDONLY : O_RDWR);
+
+	w = malloc(sizeof(*w));
+	if (!w)
+		return -ENOMEM;
+
+	memset(w, 0, sizeof(*w));
+	w->data_offset = data_offset;
+	w->mem_alignment = device_alignment(device);
+	w->block_size = device_block_size(cd, device);
+	if (!w->block_size || !w->mem_alignment) {
+		log_dbg(cd, "block size or alignment error.");
+		r = -EINVAL;
+		goto err;
+	}
+
+	w->dev_fd = device_open(cd, device, open_flags);
+	if (w->dev_fd < 0) {
+		r = -EINVAL;
+		goto err;
+	}
+
+	if (crypt_is_cipher_null(_cipher)) {
+		log_dbg(cd, "Requested cipher_null, switching to noop wrapper.");
+		w->type = NONE;
+		*cw = w;
+		return 0;
+	}
+
+	if (!vk) {
+		log_dbg(cd, "no key passed.");
+		r = -EINVAL;
+		goto err;
+	}
+
+	r = crypt_storage_backend_init(cd, w, iv_start, sector_size, _cipher, mode, vk, flags);
+	if (!r) {
+		*cw = w;
+		return 0;
+	}
+
+	log_dbg(cd, "Failed to initialize userspace block cipher.");
+
+	if ((r != -ENOTSUP && r != -ENOENT) || (flags & DISABLE_DMCRYPT))
+		goto err;
+
+	r = crypt_storage_dmcrypt_init(cd, w, device, data_offset >> SECTOR_SHIFT, iv_start,
+								   sector_size, cipher, vk, open_flags);
+	if (r) {
+		log_dbg(cd, "Dm-crypt backend failed to initialize.");
+		goto err;
+	}
+	*cw = w;
+	return 0;
+	err:
+	crypt_storage_wrapper_destroy(w);
+	/* wrapper destroy */
+	return r;
+}
+
 /* offset is relative to sector_start */
 ssize_t crypt_storage_wrapper_read(struct crypt_storage_wrapper *cw,
 		off_t offset, void *buffer, size_t buffer_length)
