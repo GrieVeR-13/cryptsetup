@@ -237,7 +237,7 @@ err:
 	return r;
 }
 
-int crypt_storage_wrapper_init_mode(struct crypt_device *cd,
+int crypt_storage_wrapper_init_mode(struct crypt_device *cd, //todo merge with crypt_storage_wrapper_init
 							   struct crypt_storage_wrapper **cw,
 							   struct device *device,
 							   uint64_t data_offset,

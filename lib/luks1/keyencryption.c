@@ -54,7 +54,7 @@ static int LUKS_endec_template(char *src, size_t srcLength,
 			       int mode,
 			       struct crypt_device *ctx)
 {
-	//hack2
+	//lukshack
 	return -ENOTSUP;
 	char name[PATH_MAX], path[PATH_MAX];
 	char cipher_spec[MAX_CIPHER_LEN * 3];

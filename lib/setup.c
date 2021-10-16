@@ -3993,7 +3993,7 @@ int update_reencryption_flag(struct crypt_device *cd, int enable, bool commit);
 static int crypt_device_storage_wrapper_init(struct crypt_device *cd, struct volume_key *vk) {
 	struct crypt_storage_wrapper *cw1;
 	int r = crypt_storage_wrapper_init_mode(cd, &cw1, crypt_data_device(cd),
-										crypt_get_data_offset(cd) << SECTOR_SHIFT, //warning
+										crypt_get_data_offset(cd) << SECTOR_SHIFT, //lukswarning
 										crypt_get_iv_offset(cd),
 										crypt_get_sector_size(cd),
 										crypt_get_cipher(cd),
@@ -4020,7 +4020,7 @@ static int _open_and_activate(struct crypt_device *cd, int keyslot, const char *
 		return r;
 	keyslot = r;
 
-	//hack2
+	//lukshack
 	r = crypt_device_storage_wrapper_init(cd, vk);
     goto out;
 
@@ -4250,7 +4250,7 @@ static int _activate_by_passphrase(struct crypt_device *cd,
 		if (r >= 0) {
 			keyslot = r;
 
-			//hack2
+			//lukshack
 			r = crypt_device_storage_wrapper_init(cd, vk);
 			goto out;
 
@@ -4310,7 +4310,7 @@ static int _activate_loopaes(struct crypt_device *cd,
 
 static int _activate_check_status(struct crypt_device *cd, const char *name, unsigned reload)
 {
-	//hack2
+	//lukshack
 	return 0;
 
 	int r;

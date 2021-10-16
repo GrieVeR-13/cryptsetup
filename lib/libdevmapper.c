@@ -351,7 +351,7 @@ out:
 
 int dm_flags(struct crypt_device *cd, dm_target_type target, uint32_t *flags)
 {
-	//hack2
+	//lukshack
 	return -ENODEV;
 	_dm_check_versions(cd, target);
 	*flags = _dm_flags;
