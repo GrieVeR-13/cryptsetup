@@ -34,7 +34,7 @@
 #include "luks.h"
 #include "af.h"
 #include "internal.h"
-#include "../../../LuksOpenVolumeProgressInfo.h"
+#include "jni/LuksOpenVolumeProgressInfo.h"
 
 int LUKS_keyslot_area(const struct luks_phdr *hdr,
 	int keyslot,

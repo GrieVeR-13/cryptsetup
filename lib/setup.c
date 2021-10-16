@@ -176,7 +176,7 @@ void crypt_log(struct crypt_device *cd, int level, const char *msg)
 }
 
 #include "log.h"
-#include "../../LuksOpenVolumeProgressInfo.h"
+#include "jni/LuksOpenVolumeProgressInfo.h"
 
 __attribute__((format(printf, 3, 4)))
 void crypt_logf(struct crypt_device *cd, int level, const char *format, ...)

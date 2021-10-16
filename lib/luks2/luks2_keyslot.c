@@ -20,7 +20,7 @@
  */
 
 #include "luks2_internal.h"
-#include "../../../LuksOpenVolumeProgressInfo.h"
+#include "jni/LuksOpenVolumeProgressInfo.h"
 
 /* Internal implementations */
 extern const keyslot_handler luks2_keyslot;
